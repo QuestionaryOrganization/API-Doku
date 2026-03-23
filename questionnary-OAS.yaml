@@ -1,0 +1,614 @@
+openapi: 3.1.0
+info:
+  title: Questionnary - OpenAPI 3.1
+  description: |-
+    API Dokumentation of Questionnary Project 2026
+  version: 1.0.12
+tags:
+  - name: Authorization
+    description: Login and Register Enpoints
+  - name: Topics
+    description: Topic Endpoints
+  - name: Surveys
+    description: Survey Endpoints
+paths:
+  /authorize-user:
+    post:
+      tags:
+        - Authorization
+      summary: Authorize based on given user data
+      description: Authorize based on given user data
+      operationId: authorize-user
+      requestBody:
+        description: Authorize User based on given user data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Authorization'
+        required: true
+      responses:
+        '200':
+          description: Successful authorization
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationResponse'
+        '404':
+          description: Failed authorization
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationResponseFailure'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /register-user:
+    post:
+      tags:
+        - Authorization
+      summary: Register based on given user data
+      description: Register based on given user data
+      operationId: register-user
+      requestBody:
+        description: Register User based on given user data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Registration'
+        required: true
+      responses:
+        '200':
+          description: Successful registration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationResponse'
+        '404':
+          description: Failed registration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationResponseFailure'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  
+  /list-topics:
+    get:
+      tags:
+        - Topics
+      summary: List Topics, optional based on given Topic Name
+      description: List Topics, optional based on given Topic Name
+      operationId: list-topics
+      parameters: 
+        - name: userId
+          in: query
+          description: UserId for user based response
+          required: true
+          schema:
+            type: integer
+            default: 1
+        - name: title
+          in: query
+          description: Optional title search filter 
+          required: false
+          schema:
+            type: string
+            default: topic title
+      responses:
+        '200':
+          description: Topic Listing Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TopicLisingResponse'
+        '404':
+          description: Failed Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationResponseFailure'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /topic-by-id:
+    get:
+      tags:
+        - Topics
+      summary: Get single Topic by id
+      description: Get single Topic by id
+      operationId: topic-by-id
+      parameters: 
+        - name: topicId
+          in: query
+          description: TopicId
+          required: true
+          schema:
+            type: integer
+            default: 1
+      responses:
+        '200':
+          description: Topic Listing Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TopicLisingResponse'
+        '404':
+          description: Failed Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationResponseFailure'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /create-topic:
+    post:
+      tags:
+        - Topics
+      summary: create single Topic
+      description: Create single Topic
+      operationId: create-topic
+      requestBody:
+        content:
+          application/json: 
+            schema: 
+              $ref: "#/components/schemas/CreateTopicRequest"
+      responses:
+        '200':
+          description: Topic Listing Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TopicSingleResponse'
+        '404':
+          description: Failed Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationResponseFailure'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /update-topic:
+    put:
+      tags:
+        - Topics
+      summary: Update single Topic
+      description: Update single Topic
+      operationId: update-topic
+      requestBody:
+        content:
+          application/json: 
+            schema: 
+              $ref: "#/components/schemas/CreateTopicRequest"
+      responses:
+        '200':
+          description: Topic Listing Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TopicSingleResponse'
+        '404':
+          description: Failed Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationResponseFailure'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /list-surveys:
+    get:
+      tags:
+        - Surveys
+      summary: List Surveys, based on given Topic Id
+      description: List Surveys, based on given Topic Id
+      operationId: list-surveys
+      parameters: 
+        - name: topicId
+          in: query
+          description: topicId for topic based response
+          required: true
+          schema:
+            type: integer
+            default: 1
+      responses:
+        '200':
+          description: Survey Listing Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SurveyLisingResponse'
+        '404':
+          description: Failed Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationResponseFailure'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  
+  /survey-by-id:
+    get:
+      tags:
+        - Surveys
+      summary: Get single Survey by id
+      description: Get single Survey by id
+      operationId: survey-by-id
+      parameters: 
+        - name: surveyId
+          in: query
+          description: surveyId
+          required: true
+          schema:
+            type: integer
+            default: 1
+      responses:
+        '200':
+          description: Survey by id Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SurveyWithQuestions'
+        '404':
+          description: Failed Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationResponseFailure'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /create-survey:
+    post:
+      tags:
+        - Surveys
+      summary: create single Survey
+      description: Create single Survey
+      operationId: create-survey
+      requestBody:
+        content:
+          application/json: 
+            schema: 
+              $ref: "#/components/schemas/CreateSurveyRequest"
+      responses:
+        '200':
+          description: Survey Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SurveySingleResponse'
+        '404':
+          description: Failed Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationResponseFailure'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /update-survey:
+    put:
+      tags:
+        - Surveys
+      summary: Update single Survey
+      description: Update single Survey
+      operationId: update-survey
+      requestBody:
+        content:
+          application/json: 
+            schema: 
+              $ref: "#/components/schemas/UpdateSurveyRequest"
+      responses:
+        '200':
+          description: Survey Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SurveySingleResponse'
+        '404':
+          description: Failed Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationResponseFailure'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  schemas:
+    Authorization:
+      required:
+        - username
+        - password
+      type: object
+      properties:
+        username:
+          type: string
+          examples: [username]
+        password:
+           type: string
+           examples: [password]
+    AuthorizationResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          examples: [1]
+        success:
+          type: boolean
+          examples: [true]
+    AuthorizationResponseFailure:
+      type: object
+      properties:
+        success:
+          type: boolean
+          examples: [false]
+    Registration:
+      required:
+        - firstname
+        - lastname
+        - username
+        - password
+      type: object
+      properties:
+        firstname:
+          type: string
+          examples: [firstname]
+        lastname:
+          type: string
+          examples: [lastname]
+        username:
+          type: string
+          examples: [username]
+        password:
+           type: string
+           examples: [password]
+    CreateTopicRequest:
+      required:
+        - title
+        - description
+        - userIds
+      type: object
+      properties:
+        title:
+          type: string
+          examples: [firstname]
+        description:
+          type: string
+          examples: [lastname]
+        userIds:
+           type: array
+           items:
+            type: integer
+            examples: [1]
+        adminUserId:
+          type: integer
+          examples: [1]
+    CreateSurveyRequest:
+      required:
+        - title
+        - description
+        - adminUserId
+        - questions
+      type: object
+      properties:
+        title:
+          type: string
+          examples: [Survey Title]
+        description:
+          type: string
+          examples: [Survey Description]
+        adminUserId:
+          type: integer
+          examples: [1]
+        questions: 
+          type: array
+          items: 
+            type: object
+            $ref: '#/components/schemas/QuestionWithoutIdForOptions'
+    UpdateSurveyRequest:
+      required:
+        - title
+        - description
+        - questions
+      type: object
+      properties:
+        title:
+          type: string
+          examples: [Survey Title]
+        description:
+          type: string
+          examples: [Survey Description]
+        questions: 
+          type: array
+          items: 
+            type: object
+            $ref: '#/components/schemas/Question'
+    RegistrationResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          examples: [1]
+        success:
+          type: boolean
+          examples: [true]
+    Topic: 
+      required:
+        - id
+        - adminUserId
+        - createDate
+      type: object
+      properties:
+        id:
+          type: integer
+          examples: [1]
+        title:
+          type: string
+          examples: [Topic Title]
+        description:
+          type: string
+          examples: [Topic description]
+        adminUserId:
+          type: integer
+          examples: [89]
+        adminUserName:
+          type: string
+          examples: [Admin User Name]
+        createDate: 
+          type: integer
+          examples: [1774258419]
+    Survey: 
+      required:
+        - id
+        - adminUserId
+        - createDate
+      type: object
+      properties:
+        id:
+          type: integer
+          examples: [1]
+        title:
+          type: string
+          examples: [Survey Title]
+        description:
+          type: string
+          examples: [Survey description]
+        adminUserId:
+          type: integer
+          examples: [89]
+        adminUserName:
+          type: string
+          examples: [Admin User Name]
+        createDate: 
+          type: integer
+          examples: [1774258419]
+    SurveyWithQuestions:
+      required:
+        - id
+        - adminUserId
+        - createDate
+      type: object
+      properties:
+        id:
+          type: integer
+          examples: [1]
+        title:
+          type: string
+          examples: [Survey Title]
+        description:
+          type: string
+          examples: [Survey description]
+        adminUserId:
+          type: integer
+          examples: [89]
+        adminUserName:
+          type: string
+          examples: [Admin User Name]
+        questions:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/Question'
+        createDate: 
+          type: integer
+          examples: [1774258419]
+    TopicLisingResponse:
+      type: array
+      items: 
+        type: object
+        $ref: '#/components/schemas/Topic'
+    TopicSingleResponse:
+      type: object
+      $ref: '#/components/schemas/Topic'
+    SurveyLisingResponse:
+      type: array
+      items: 
+        type: object
+        $ref: '#/components/schemas/Survey'
+    SurveySingleResponse:
+      type: object
+      $ref: '#/components/schemas/Survey'
+    Question:
+      type: object
+      properties: 
+        id:
+          type: integer
+          examples: [1]
+        title:
+          type: string
+          examples: [Example Question]
+        Options:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/Option'
+    QuestionWithoutIdForOptions:
+      type: object
+      properties: 
+        title:
+          type: string
+          examples: [Example Question]
+        Options:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/OptionWithoutId'
+    Option:
+      type: object
+      properties: 
+        id:
+          type: integer
+          examples: [1]
+        value:
+          type: string
+          examples: [Option 1]
+    OptionWithoutId:
+      type: object
+      properties: 
+        value:
+          type: string
+          examples: [Option 1]
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      required:
+        - code
+        - message
