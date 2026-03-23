@@ -367,6 +367,15 @@ components:
         id:
           type: integer
           examples: [1]
+        firstname: 
+          type: string
+          examples: [firstname]
+        lastname:
+          type: string
+          examples: [lastname]
+        username:
+          type: string
+          examples: [username]
         success:
           type: boolean
           examples: [true]
